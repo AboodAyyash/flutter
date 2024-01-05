@@ -12,8 +12,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int x = 10;
   int z = 0;
+  int x = 10;
 
   ProductController productController = ProductController();
   List<Product> products = [];
