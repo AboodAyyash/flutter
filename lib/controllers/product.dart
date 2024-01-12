@@ -13,6 +13,7 @@ class ProductController {
               "https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340",
           name: "Milk",
           price: 12,
+          id: 1,
           qty: 2),
     );
 
@@ -22,6 +23,7 @@ class ProductController {
               "https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340",
           name: "Water",
           price: 10,
+          id: 2,
           qty: 5),
     );
 
@@ -31,6 +33,7 @@ class ProductController {
               "https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340",
           name: "Pepsi",
           price: 15,
+          id: 3,
           qty: 15),
     );
   }
@@ -48,11 +51,9 @@ class ProductController {
   }
 
   void addToCart(Product product) {
-    Cart cart = Cart(
-        img: product.img,
-        name: product.name,
-        price: product.price,
-        qty: product.qty);
+    print(product.id);
+    print(product.qty);
+    Cart cart = Cart(id: product.id, qty: product.qty);
     shared.cartController.productsCart.add(cart);
     print(shared.cartController.productsCart.length);
   }

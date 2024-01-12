@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable_panel/flutter_slidable_panel.dart';
-import 'package:start/models/cart.dart';
+import 'package:start/models/product.dart';
 import 'package:start/shared/shared.dart';
 
-Widget cartProduct(Cart product, index, setState) {
+Widget cartProduct(Product product, index, setState) {
   final SlideController _slideController = SlideController(
     usePreActionController: true,
     usePostActionController: true,
@@ -13,7 +13,11 @@ Widget cartProduct(Cart product, index, setState) {
     preActions: [
       IconButton(
         onPressed: () {
-          // _slideController.toggleAction(0);
+          _slideController.toggleAction(0);
+          setState(() {
+            cartController.deleteFromCart(index);
+            total = cartController.getTotal();
+          });
         },
         style: TextButton.styleFrom(
           backgroundColor: Colors.red,
@@ -30,11 +34,12 @@ Widget cartProduct(Cart product, index, setState) {
           height: 90,
         ),
         title: Text(product.name),
-        subtitle: Text(product.price.toString()),
+        subtitle: Text("Price: ${product.price}   Qty: ${product.qty}"),
         trailing: IconButton(
           onPressed: () {
             setState(() {
               cartController.deleteFromCart(index);
+              total = cartController.getTotal();
             });
           },
           icon: Icon(

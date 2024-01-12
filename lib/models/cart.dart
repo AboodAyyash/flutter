@@ -1,12 +1,6 @@
 class Cart {
-  String name;
-  String img;
-  double price;
+  int id;
   int qty;
 
-  Cart(
-      {required this.img,
-      required this.name,
-      required this.price,
-      required this.qty});
+  Cart({required this.id, required this.qty});
 }

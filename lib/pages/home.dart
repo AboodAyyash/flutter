@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:start/controllers/product.dart';
 import 'package:start/models/product.dart';
 import 'package:start/pages/cart.dart';
+import 'package:start/pages/orders.dart';
 import 'package:start/widgets/product.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,7 +16,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int z = 0;
   int x = 10;
 
-  ProductController productController = ProductController();
   List<Product> products = [];
 
   @override
@@ -42,6 +42,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         elevation: 0,
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const OrdersPage(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.list,
+              color: Colors.white,
+            ),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -87,8 +101,22 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Column(
               children: [
-                for (int i = 0; i < products.length; i++)
-                  productWidget(products[i], setState),
+                GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: products.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: 350,
+                      mainAxisSpacing: 0,
+                      crossAxisSpacing: 0,
+                    ),
+                    itemBuilder: (BuildContext context, index) {
+                      return productWidget(products[index], setState);
+                    }),
+
+                /* for (int i = 0; i < products.length; i++)
+                  productWidget(products[i], setState), */
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
