@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:start/pages/home.dart';
+import 'package:start/theme/color.dart' as colors;
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +15,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Start',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        scaffoldBackgroundColor: colors.backgroundColor,
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: colors.backgroundColor,
+          foregroundColor: Colors.white,
+        ),
       ),
-      home: const MyHomePage(),
+      home: const HomePage(),
     );
   }
 }
