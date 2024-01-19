@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:start/pages/splash.dart';
 import 'package:start/pages/home.dart';
 import 'package:start/theme/color.dart' as colors;
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
       ),
-      home: const HomePage(),
+      home: const ButtonPage(),
     );
   }
 }
