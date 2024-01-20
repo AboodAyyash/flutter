@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start/DB/DB-note.dart';
+import 'package:start/pages/auth/profile.dart';
 import 'package:start/pages/edit.dart';
+import 'package:start/shared/shared.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,6 +33,22 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     sharedData();
+    getNotes();
+  }
+
+  getNotes() async {
+    DatabaseHelperNotes helperNotes = DatabaseHelperNotes();
+    await helperNotes.init();
+    helperNotes.queryAllRows().then((value) {
+      print(value);
+      for (var i = 0; i < value.length; i++) {
+        if (userData['id'] == value[i]['userId']) {
+          setState(() {
+            notes.add(value[i]);
+          });
+        }
+      }
+    });
   }
 
   sharedData() async {
@@ -67,6 +86,17 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const ProfilePage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.person),
+          ),
           isSearch
               ? IconButton(
                   onPressed: () {

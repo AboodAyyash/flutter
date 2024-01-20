@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start/DB/DB-user.dart';
+import 'package:start/pages/auth/signup.dart';
 import 'package:start/pages/home.dart';
+import 'package:start/services/service.dart';
+import 'package:start/shared/shared.dart';
+import 'package:start/widgets/custom_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -60,14 +65,49 @@ class _LoginPageState extends State<LoginPage> {
               if (nameController.text.toString().isEmpty ||
                   passwordController.text.toString().isEmpty) {
                 print("Please Fill Data First!");
+
+                customDialog(
+                  body: "Please Fill Data First!",
+                  title: "Login",
+                  okButton: "OK",
+                  cancelButton: "Cancel",
+                  context: context,
+                ).then((value) {
+                  print(value);
+
+                  if (value == "ok") {
+                    customDialog(
+                      body: "you need go to signup?",
+                      title: "Login",
+                      okButton: "Yes",
+                      cancelButton: "No",
+                      context: context,
+                    ).then((value) {
+                      if (value == "ok") {
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                const SignupPage(),
+                          ),
+                        );
+                      }
+                    });
+                  }
+                });
               } else {
                 checkUser(
                         name: nameController.text.toString(),
                         password: passwordController.text.toString())
                     .then((value) {
-                  print(value);
                   if (value['mainCheck']) {
                     print("LoggedIn!");
+                    saveUserId(userData['id']);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                        (Route<dynamic> route) => false);
                   } else {
                     print("Please Signup First!");
                   }
@@ -97,13 +137,36 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<Map> checkUser({name, password}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    DatabaseHelper databaseHelper = DatabaseHelper();
+    await databaseHelper.init();
+    List users = [];
+    await databaseHelper.queryAllRows().then((value) {
+      print(value);
+      users = value;
+    });
     bool checkName = true;
     bool checkPassword = true;
-    prefs.getString("name");
-    prefs.getString("password");
 
-    if (name == prefs.getString("name") &&
+    for (var i = 0; i < users.length; i++) {
+      if (name == users[i]['name'] && password == users[i]['password']) {
+        userData = users[i];
+        return {"mainCheck": true};
+      }
+      if (name != users[i]['name']) {
+        checkName = false;
+      }
+      if (password != users[i]['password']) {
+        checkPassword = false;
+      }
+    }
+
+    return {
+      "mainCheck": false,
+      "checkName": checkName,
+      "checkPassword": checkPassword
+    };
+
+    /*   if (name == prefs.getString("name") &&
         password == prefs.getString("password")) {
       return {"mainCheck": true};
     } else {
@@ -118,6 +181,6 @@ class _LoginPageState extends State<LoginPage> {
         "checkName": checkName,
         "checkPassword": checkPassword
       };
-    }
+    } */
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:start/DB/DB-note.dart';
+import 'package:start/shared/shared.dart';
 
 class EditPage extends StatefulWidget {
   Map note;
@@ -30,7 +32,7 @@ class _EditPageState extends State<EditPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               if (hasNote) {
                 setState(() {
                   hasNote = false;
@@ -41,9 +43,22 @@ class _EditPageState extends State<EditPage> {
                   "body": bodyController.text.toString(),
                 };
 
-                print(titleController.text.toString());
-                print(bodyController.text.toString());
-                Navigator.pop(context, data);
+                DatabaseHelperNotes helperNotes = DatabaseHelperNotes();
+                await helperNotes.init();
+                Map<String, dynamic> note = {
+                  'title': titleController.text.toString(),
+                  'body': bodyController.text.toString(),
+                  'userId': userData['id'],
+                };
+
+                helperNotes.insert(note).then((value) {
+                  print(titleController.text.toString());
+                  print(bodyController.text.toString());
+                  helperNotes.queryAllRows().then((value) {
+                    print(value);
+                    Navigator.pop(context, data);
+                  });
+                });
               }
             },
             icon: hasNote ? Icon(Icons.edit) : Icon(Icons.save),

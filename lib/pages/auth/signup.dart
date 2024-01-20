@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start/DB/DB-user.dart';
 import 'package:start/pages/auth/login.dart';
 
 class SignupPage extends StatefulWidget {
@@ -110,15 +111,56 @@ class _SignupPageState extends State<SignupPage> {
               ],
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const LoginPage(),
+                ),
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(color: Colors.amber.shade300),
+                  child: Text(
+                    "Have Account already, Go To Login Page",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
   signupUser({email, name, password}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("email", email);
-    prefs.setString("name", name);
-    prefs.setString("password", password);
+    DatabaseHelper databaseHelper = DatabaseHelper();
+    await databaseHelper.init();
+    Map<String, dynamic> userData = {
+      'email': email,
+      "name": name,
+      "password": password,
+      "bio": ""
+    };
+    List tableData = [];
+    await databaseHelper.insert(userData);
+    await databaseHelper.queryAllRows().then((value) {
+      print(value);
+      tableData = value;
+    });
+
+    print(tableData.length);
   }
 }

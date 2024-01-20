@@ -2,8 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start/DB/DB-user.dart';
+import 'package:start/pages/auth/login.dart';
 import 'package:start/pages/auth/signup.dart';
 import 'package:start/pages/home.dart';
+import 'package:start/services/service.dart';
+import 'package:start/shared/shared.dart';
 
 class ButtonPage extends StatefulWidget {
   const ButtonPage({super.key});
@@ -20,23 +24,32 @@ class _ButtonPageState extends State<ButtonPage> {
   }
 
   checkFun() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getString("checkPage") != null) {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-          (Route<dynamic> route) => false);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const SignupPage(),
-          ),
-          (Route<dynamic> route) => false);
-    }
+    getUserId().then((userId) async {
+      print("User ID $userId");
+      if (userId != 0) {
+        DatabaseHelper databaseHelper = DatabaseHelper();
+        await databaseHelper.init();
+        databaseHelper.queryAllRows().then((value) {
+          for (var i = 0; i < value.length; i++) {
+            if (userId == value[i]['id']) {
+              userData = value[i];
+              break;
+            }
+          }
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+              (Route<dynamic> route) => false);
+        });
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const LoginPage(),
+            ),
+            (Route<dynamic> route) => false);
+      }
+    });
   }
 
   @override
