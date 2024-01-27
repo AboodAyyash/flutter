@@ -12,6 +12,7 @@ class EditPage extends StatefulWidget {
 
 class _EditPageState extends State<EditPage> {
   bool hasNote = false;
+  bool isEdit = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
 
@@ -36,29 +37,41 @@ class _EditPageState extends State<EditPage> {
               if (hasNote) {
                 setState(() {
                   hasNote = false;
+                  isEdit = true;
                 });
               } else {
-                Map data = {
-                  "title": titleController.text.toString(),
-                  "body": bodyController.text.toString(),
-                };
+                if (isEdit) {
+                  print("Is Edit");
+                  DatabaseHelperNotes helperNotes = DatabaseHelperNotes();
+                  await helperNotes.init();
+                  Map<String, dynamic> note = {
+                    'title': titleController.text.toString(),
+                    'body': bodyController.text.toString(),
+                    'id': widget.note['id'],
+                    'userId': widget.note['userId'],
+                  };
 
-                DatabaseHelperNotes helperNotes = DatabaseHelperNotes();
-                await helperNotes.init();
-                Map<String, dynamic> note = {
-                  'title': titleController.text.toString(),
-                  'body': bodyController.text.toString(),
-                  'userId': userData['id'],
-                };
-
-                helperNotes.insert(note).then((value) {
-                  print(titleController.text.toString());
-                  print(bodyController.text.toString());
-                  helperNotes.queryAllRows().then((value) {
-                    print(value);
-                    Navigator.pop(context, data);
+                  helperNotes.update(note).then((value) {
+                    Navigator.pop(context, note);
                   });
-                });
+                } else {
+                  DatabaseHelperNotes helperNotes = DatabaseHelperNotes();
+                  await helperNotes.init();
+                  Map<String, dynamic> note = {
+                    'title': titleController.text.toString(),
+                    'body': bodyController.text.toString(),
+                    'userId': userData['id'],
+                  };
+
+                  helperNotes.insert(note).then((valueInsert) {
+                    print(valueInsert);
+
+                    helperNotes.queryAllRows().then((value) {
+                      print(value);
+                      Navigator.pop(context, value[value.length - 1]);
+                    });
+                  });
+                }
               }
             },
             icon: hasNote ? Icon(Icons.edit) : Icon(Icons.save),

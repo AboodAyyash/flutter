@@ -11,6 +11,8 @@ class DatabaseHelperNotes {
   static const columnId = 'id';
   static const columnTitle = 'title';
   static const columnBody = 'body';
+/*   static const columnisFav = 'isFav';
+  static const columnTime = 'time'; */
   static const columnUserId = 'userId';
 
   late Database _db;
@@ -51,8 +53,7 @@ class DatabaseHelperNotes {
 
   Future<int> update(Map<String, dynamic> row) async {
     int id = row[columnId];
-    print(row[columnId]);
-    print(row);
+
     return await _db.update(
       table,
       row,

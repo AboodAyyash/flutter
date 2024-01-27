@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Future customDialog({context, title, body, cancelButton, okButton}) async {
+Future customDialog(
+    {context, title, body, cancelButton = "Cancel", okButton = "OK"}) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {

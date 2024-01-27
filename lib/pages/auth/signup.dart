@@ -152,7 +152,8 @@ class _SignupPageState extends State<SignupPage> {
       'email': email,
       "name": name,
       "password": password,
-      "bio": ""
+      "bio": "",
+      "phone": "",
     };
     List tableData = [];
     await databaseHelper.insert(userData);

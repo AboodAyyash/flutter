@@ -34,6 +34,7 @@ class DatabaseHelper {
   static const columnEmail = 'email';
   static const columnPassword = 'password';
   static const columnBio = 'bio';
+  static const columnPhone = 'phone';
 
   late Database _db;
 
@@ -54,6 +55,7 @@ class DatabaseHelper {
             $columnName TEXT NOT NULL,
             $columnEmail TEXT NOT NULL,
             $columnPassword TEXT NOT NULL,
+            $columnPhone TEXT NOT NULL,
             $columnBio TEXT NOT NULL
           )
           ''');
@@ -73,9 +75,9 @@ class DatabaseHelper {
   }
 
   Future<int> update(Map<String, dynamic> row) async {
-    int id = row[columnId];
-    print(row[columnId]);
-    print(row);
+    int id = row[columnId]; //'id'
+    //{'id':1,'email':'email@email.com}
+
     return await _db.update(
       table,
       row,
