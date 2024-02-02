@@ -2,17 +2,14 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DatabaseHelperNotes {
-  static const _databaseName = "notes.db";
+class DatabaseHelperFavoriteNotes {
+  static const _databaseName = "favorite-notes.db";
   static const _databaseVersion = 1;
 
   static const table = 'notes';
 
   static const columnId = 'id';
-  static const columnTitle = 'title';
-  static const columnBody = 'body';
-  static const columnisFav = 'isFav';
-  static const columnTime = 'time';
+  static const columnNoteId = 'noteId';
   static const columnUserId = 'userId';
 
   late Database _db;
@@ -31,10 +28,7 @@ class DatabaseHelperNotes {
     await db.execute('''
           CREATE TABLE $table (
             $columnId INTEGER PRIMARY KEY,
-            $columnTitle TEXT NOT NULL,
-            $columnBody TEXT NOT NULL,
-            $columnisFav TEXT NOT NULL,
-            $columnTime TEXT NOT NULL,
+            $columnNoteId INTEGER NOT NULL,
             $columnUserId INTEGER NOT NULL
           )
           ''');

@@ -48,6 +48,8 @@ class _EditPageState extends State<EditPage> {
                     'title': titleController.text.toString(),
                     'body': bodyController.text.toString(),
                     'id': widget.note['id'],
+                    'isFav': "0",
+                    "time": TimeOfDay.now().toString(),
                     'userId': widget.note['userId'],
                   };
 
@@ -60,6 +62,8 @@ class _EditPageState extends State<EditPage> {
                   Map<String, dynamic> note = {
                     'title': titleController.text.toString(),
                     'body': bodyController.text.toString(),
+                    'isFav': "0",
+                    "time": TimeOfDay.now().toString(),
                     'userId': userData['id'],
                   };
 
