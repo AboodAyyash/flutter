@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:start/pages/splash.dart';
-import 'package:start/pages/home.dart';
-import 'package:start/theme/color.dart' as colors;
 
-void main() {
-  runApp(const MyApp());
+GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  var delegate = await LocalizationDelegate.create(
+      fallbackLocale: 'en', supportedLocales: ['en', 'ar']);
+  runApp(LocalizedApp(delegate, MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,18 +16,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Start',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: colors.backgroundColor,
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: colors.backgroundColor,
-          foregroundColor: Colors.white,
+    var localizationDelegate = LocalizedApp.of(context).delegate;
+    return LocalizationProvider(
+      state: LocalizationProvider.of(context).state,
+      child: MaterialApp(
+        title: 'Flutter Start',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          localizationDelegate
+        ],
+        supportedLocales: localizationDelegate.supportedLocales,
+        locale: localizationDelegate.currentLocale,
+        navigatorKey: navKey,
+        theme: ThemeData(
+          useMaterial3: true,
         ),
+        home: const SplashPage(),
       ),
-      home: const ButtonPage(),
     );
   }
 }

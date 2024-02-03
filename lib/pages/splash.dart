@@ -1,70 +1,59 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:start/DB/DB-user.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:start/pages/auth/login.dart';
-import 'package:start/pages/auth/signup.dart';
-import 'package:start/pages/home.dart';
-import 'package:start/services/service.dart';
-import 'package:start/shared/shared.dart';
 
-class ButtonPage extends StatefulWidget {
-  const ButtonPage({super.key});
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
 
   @override
-  State<ButtonPage> createState() => _ButtonPageState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _ButtonPageState extends State<ButtonPage> {
+class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    checkFun();
+    timer();
   }
 
-  checkFun() async {
-    getUserId().then((userId) async {
-      print("User ID $userId");
-      if (userId != 0) {
-        DatabaseHelper databaseHelper = DatabaseHelper();
-        await databaseHelper.init();
-        databaseHelper.queryAllRows().then((value) {
-          for (var i = 0; i < value.length; i++) {
-            if (userId == value[i]['id']) {
-              userData = value[i];
-              break;
-            }
-          }
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-              (Route<dynamic> route) => false);
-        });
-      } else {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => const LoginPage(),
-            ),
-            (Route<dynamic> route) => false);
-      }
+  void timer() {
+    Timer(Duration(seconds: 3), () {
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => const LoginPage(),
+        ),
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: IconButton(
-          onPressed: () async {
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-            prefs.setString("checkPage", "enter");
-          },
-          icon: Platform.isAndroid ? Icon(Icons.check) : Icon(Icons.alarm),
+      body: Stack(children: [
+        Image.asset(
+          "assets/images/splash.jpeg",
         ),
-      ),
+        Positioned(
+          right: 200,
+          top: 200,
+          child: Text(
+            translate("splash"), //login
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        )
+        /* Container(
+          margin: EdgeInsets.only(top: 200, left: 20),
+          child: 
+        ), */
+      ]),
     );
   }
 }

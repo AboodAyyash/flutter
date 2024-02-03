@@ -39,6 +39,9 @@ dependencies:
   path_provider: ^2.1.2
   salomon_bottom_bar: ^3.3.2
   carousel_slider: ^4.2.1
+  flutter_translate: ^4.0.4
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +71,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/i18n/ar.json
+    - assets/i18n/en.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

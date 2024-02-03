@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:start/DB/DB-user.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:start/pages/auth/login.dart';
+import 'package:start/pages/skills.dart';
+import 'package:start/widgets/lang-button.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -11,157 +12,160 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  TextEditingController emailController = TextEditingController();
-
-  TextEditingController nameController = TextEditingController();
-
-  TextEditingController passwordController = TextEditingController();
-
+  String accept = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Signup",
-          style: TextStyle(
-            fontSize: 30,
-          ),
-        ),
-      ),
       body: ListView(
         children: [
           SizedBox(
-            height: 20,
+            height: 10,
           ),
-          TextField(
-            style: const TextStyle(color: Colors.white),
-            controller: emailController,
-            maxLines: 2,
-            decoration: const InputDecoration(
-              hintText: "Enter Email",
-              hintStyle: TextStyle(
-                color: Colors.white,
+          langButton(),
+          SizedBox(
+            height: 80,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                translate('signupPage'),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+            ],
           ),
           SizedBox(
             height: 20,
           ),
-          TextField(
-            style: const TextStyle(color: Colors.white),
-            controller: nameController,
-            maxLines: 2,
-            decoration: const InputDecoration(
-              hintText: "Enter User Name",
-              hintStyle: TextStyle(
-                color: Colors.white,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                translate('signupDescreption'),
+                style: TextStyle(
+                  fontSize: 20,
+                ),
               ),
-            ),
+            ],
           ),
           SizedBox(
             height: 20,
           ),
-          TextField(
-            style: const TextStyle(color: Colors.white),
-            controller: passwordController,
-            maxLines: 2,
-            decoration: const InputDecoration(
-              hintText: "Enter Password",
-              hintStyle: TextStyle(
-                color: Colors.white,
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text(
+                  translate('email'),
+                ),
               ),
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
-          InkWell(
-            onTap: () {
-              if (emailController.text.toString().isEmpty ||
-                  nameController.text.toString().isEmpty ||
-                  passwordController.text.toString().isEmpty) {
-                print("Please Add All Data!");
-              } else {
-                signupUser(
-                    email: emailController.text.toString(),
-                    name: nameController.text.toString(),
-                    password: passwordController.text.toString());
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const LoginPage(),
-                  ),
-                );
-              }
-            },
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text(
+                  translate('name'),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text(
+                  translate('password'),
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text(translate("acceptTermsAndConditions")),
+            leading: Radio(
+                value: "1",
+                groupValue: accept,
+                onChanged: (value) {
+                  setState(() {
+                    accept = value.toString();
+                  });
+                }),
+          ),
+          /* RadioListTile(
+              title: Text(translate("acceptTermsAndConditions")),
+              value: "1",
+              groupValue: accept,
+              onChanged: (value) {
+                setState(() {
+                  accept = value.toString();
+                });
+              }), */
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: Colors.amber.shade300),
+                Text(translate("ifYouHaveAnAccount,")),
+                InkWell(
+                  onTap: () {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const LoginPage(),
+                      ),
+                    );
+                  },
                   child: Text(
-                    "Signup",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                    ),
+                    translate("loginHere"),
+                    style: TextStyle(color: Colors.purple),
                   ),
                 ),
               ],
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           InkWell(
             onTap: () {
               Navigator.push<void>(
                 context,
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const LoginPage(),
+                  builder: (BuildContext context) => const SkillsPage(),
                 ),
               );
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: Colors.amber.shade300),
-                  child: Text(
-                    "Have Account already, Go To Login Page",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                  ),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              color: Colors.purple,
+              child: Text(
+                translate('signup'),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
                 ),
-              ],
+              ),
             ),
-          ),
+          )
         ],
       ),
     );
-  }
-
-  signupUser({email, name, password}) async {
-    DatabaseHelper databaseHelper = DatabaseHelper();
-    await databaseHelper.init();
-    Map<String, dynamic> userData = {
-      'email': email,
-      "name": name,
-      "password": password,
-      "bio": "",
-      "phone": "",
-    };
-    List tableData = [];
-    await databaseHelper.insert(userData);
-    await databaseHelper.queryAllRows().then((value) {
-      print(value);
-      tableData = value;
-    });
-
-    print(tableData.length);
   }
 }
