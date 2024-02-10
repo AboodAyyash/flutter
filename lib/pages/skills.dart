@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:start/pages/auth/profile.dart';
 import 'package:start/widgets/lang-button.dart';
 
 class SkillsPage extends StatefulWidget {
@@ -70,7 +71,7 @@ class _SkillsPageState extends State<SkillsPage> {
               Navigator.push<void>(
                 context,
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const SkillsPage(),
+                  builder: (BuildContext context) => const ProfilePage(),
                 ),
               );
             },

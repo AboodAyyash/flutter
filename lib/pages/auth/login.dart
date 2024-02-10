@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:start/pages/auth/signup.dart';
+import 'package:start/pages/skills.dart';
 import 'package:start/widgets/lang-button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -99,6 +100,32 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
+               SizedBox(
+            height: 10,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const SkillsPage(),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              color: Colors.purple,
+              child: Text(
+                translate('login'),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
