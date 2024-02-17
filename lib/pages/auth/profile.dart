@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:start/pages/auth/login.dart';
+import 'package:start/pages/hash.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -25,6 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String skillsText = "";
   double maxScrollExtent = 0.0;
   double currentPosition = 0.0;
+
+  int count = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -85,8 +90,37 @@ class _ProfilePageState extends State<ProfilePage> {
       body: ListView(
         controller: controller,
         children: [
-          
-          Text(translate("myProfile")).animate().fade(duration: 900.ms),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              translate("myProfile"),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ).animate().fade(duration: 900.ms),
+          ),
+          CircleAvatar(
+            radius: 50,
+            foregroundImage: AssetImage("assets/images/splash.jpeg"),
+            backgroundColor: Colors.blue,
+          ),
+          /*    IconButton(
+            onPressed: () {
+              if (count <= 3) {
+                count += 1;
+              } else {
+                print("please try after 1 min");
+                Timer(Duration(seconds: 3), () {
+                  count = 0;
+
+                  print(count);
+                });
+              }
+              print(count);
+            },
+            icon: Icon(Icons.next_plan_outlined),
+          ), */
           /*  Column(
             children: [
               for (int i = 0; i < skills.length; i++)
@@ -99,12 +133,90 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ), */
 
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text(
+              translate("mySkills"),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ).animate().fade(duration: 900.ms),
+          ),
           Wrap(
             alignment: WrapAlignment.center,
             children: [
               for (int i = 0; i < skills.length; i++) skill(skills[i])
             ],
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text(
+                  translate('email'),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text(
+                  translate('name'),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                label: Text(
+                  translate('password'),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const HashPage(),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              color: Colors.purple,
+              child: Text(
+                translate('logout'),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

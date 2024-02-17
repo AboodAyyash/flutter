@@ -43,6 +43,7 @@ dependencies:
   flutter_share: ^2.0.0
   device_info_plus: ^9.1.2
   flutter_animate: ^4.5.0
+  crypto: ^3.0.3
   flutter_translate: ^4.0.4
   flutter_localizations:
     sdk: flutter
