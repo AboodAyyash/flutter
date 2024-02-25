@@ -74,7 +74,8 @@ class _HashPageState extends State<HashPage> {
         actions: [
           IconButton(
               onPressed: () {
-                getData();
+                checkGoals();
+                // getData();
               },
               icon: Icon(Icons.data_array)),
           IconButton(
@@ -254,8 +255,8 @@ class _HashPageState extends State<HashPage> {
                       Divider(),
                     ],
                   ),
-               
-               /* 
+
+                /* 
                
                  for (int i = 0; i < products['products'].length; i++)
                   Column(
@@ -345,4 +346,39 @@ class _HashPageState extends State<HashPage> {
 
     print(products);
   }
+}
+
+void checkGoals() {
+  var allPoints = 25;
+  List goals = [
+    {"playerName": "b", "location": "4"},
+    {"playerName": "c", "location": "2"},
+    {"playerName": "d", "location": "2"},
+    {"playerName": "f", "location": "1"},
+  ];
+
+  List teamAFull = [
+    {'name': "a", 'age': '20', 'hight': "190","team":'a'}
+  ];
+  
+  List teamA = ["a", "b", "c", "d", "e", "k"];
+  List teamB = ["f", "g", "h", "j", "u", "q"];
+  int goalsA = 0;
+  int goalsB = 0;
+  for (var i = 0; i < goals.length; i++) {
+    if (teamA.contains(goals[i]['playerName'])) {
+      goalsA += 1;
+    }
+    if (teamB.contains(goals[i]['playerName'])) {
+      goalsB += 1;
+    }
+  }
+  if (goalsA == (goalsB + 2)) {
+    print("Team A is Win");
+  }
+  if (goalsB == (goalsA + 2)) {
+    print("Team B is Win");
+  }
+  print("goalsA $goalsA");
+  print("goalsB $goalsB");
 }

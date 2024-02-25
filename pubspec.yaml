@@ -45,6 +45,8 @@ dependencies:
   flutter_animate: ^4.5.0
   crypto: ^3.0.3
   flutter_translate: ^4.0.4
+  dio: ^5.4.1
+  #http: ^1.2.1
   flutter_localizations:
     sdk: flutter
 
